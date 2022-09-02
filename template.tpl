@@ -1,3 +1,11 @@
+___TERMS_OF_SERVICE___
+
+By creating or modifying this file you agree to Google Tag Manager's Community
+Template Gallery Developer Terms of Service available at
+https://developers.google.com/tag-manager/gallery-tos (or such other URL as
+Google may provide), as modified from time to time.
+
+
 ___INFO___
 
 {
@@ -126,6 +134,9 @@ const organization = data.organizationID;
 const hotel = data.hotelID;
 const arrival = data.transformDates ? data.convertFunction(data.arrivalDate, data.datePattern) : data.arrivalDate;
 const departure = data.transformDates ? data.convertFunction(data.departureDate, data.datePattern) : data.departureDate;
+//const adults = getType(data.adultCount) === 'number' ? data.adultCount.toString() : data.adultCount;
+//const kids = getType(data.kidsCount) === 'number' ? data.kidsCount.toString() : data.kidsCount;
+//const rooms = getType(data.roomCount) === 'number' ? data.roomCount.toString() : data.roomCount;
 const adults = data.adultCount;
 const kids = data.kidsCount;
 const rooms = data.roomCount;
@@ -142,7 +153,7 @@ let pixelUrl = 'https://s8qyj1.sse.codesandbox.io/pixel/';
 
 // Check for the permissions
 if(queryPermission('send_pixel', pixelUrl)) {
-  // Fetch the pixel
+  // Fetch teh pixel
   sendPixel(
     pixelUrl,
     data.gtmOnSuccess,
@@ -288,3 +299,5 @@ setup: |-
 ___NOTES___
 
 Created on 31/08/2022, 23:16:30
+
+
