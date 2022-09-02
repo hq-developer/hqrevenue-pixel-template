@@ -19,6 +19,11 @@ ___INFO___
     "displayName": ""
   },
   "description": "Send data to HQ via GET requests.\nSetup your \"OrganizationID\", and refer to our documentation at: hqrevenue.com/knowledgebase",
+  "categories": [
+    "MARKETING",
+    "SALES"
+    "TAG_MANAGEMENT",
+  ],
   "containerContexts": [
     "WEB"
   ]
