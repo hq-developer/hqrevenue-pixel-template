@@ -40,8 +40,8 @@ ___TEMPLATE_PARAMETERS___
   },
   {
     "type": "GROUP",
-    "name": "BookingVariables",
-    "displayName": "Booking Variables",
+    "name": "BookingParameters",
+    "displayName": "Booking Parameters",
     "groupStyle": "NO_ZIPPY",
     "subParams": [
       {
@@ -77,7 +77,7 @@ ___TEMPLATE_PARAMETERS___
       {
         "type": "TEXT",
         "name": "hotelID",
-        "displayName": "Identification of the selected hotel",
+        "displayName": "Identification of the selected hotel (Only for hotel chains)",
         "simpleValueType": true
       }
     ]
@@ -131,7 +131,6 @@ ___SANDBOXED_JS_FOR_WEB_TEMPLATE___
 const queryPermission = require('queryPermission');
 const sendPixel = require('sendPixel');
 const getType = require('getType');
-// const log = require('logToConsole');
 
 // Get formatted date
 function getDate(date){
