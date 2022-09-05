@@ -18,7 +18,7 @@ ___INFO___
     "id": "brand_dummy",
     "displayName": ""
   },
-  "description": "Send data to HQ via GET requests.\nSetup your \"OrganizationID\", and refer to our documentation at: hqrevenue.com/knowledgebase",
+  "description": "Integrate booking intents from your site to HQ revenue's Performance Board.",
   "categories": [
     "ANALYTICS",
     "SALES",
