@@ -20,9 +20,8 @@ ___INFO___
   },
   "description": "Send data to HQ via GET requests.\nSetup your \"OrganizationID\", and refer to our documentation at: hqrevenue.com/knowledgebase",
   "categories": [
-    "MARKETING",
-    "SALES"
-    "TAG_MANAGEMENT",
+    "ANALYTICS",
+    "SALES",
   ],
   "containerContexts": [
     "WEB"
@@ -86,7 +85,7 @@ ___TEMPLATE_PARAMETERS___
   {
     "type": "GROUP",
     "name": "ApplyDateTransformation",
-    "displayName": "Should dates be formatted to ISO Standard",
+    "displayName": "Should dates be formatted to ISO Standard? (YYYY-MM-DD)",
     "groupStyle": "NO_ZIPPY",
     "subParams": [
       {
@@ -97,8 +96,8 @@ ___TEMPLATE_PARAMETERS___
       },
       {
         "type": "TEXT",
-        "name": "datePattern",
-        "displayName": "Your date\u0027s format description. In ISO duration, eg: DD.MM.YYYY, or MM.DD.YY",
+        "name": "convertFunction",
+        "displayName": "Custom Javascript function to convert dates.",
         "simpleValueType": true,
         "enablingConditions": [
           {
@@ -110,8 +109,8 @@ ___TEMPLATE_PARAMETERS___
       },
       {
         "type": "TEXT",
-        "name": "convertFunction",
-        "displayName": "The convert date function.",
+        "name": "helperParam",
+        "displayName": "Second parameter to be sent to your conversion function. (Optional)",
         "simpleValueType": true,
         "enablingConditions": [
           {
@@ -134,14 +133,20 @@ const sendPixel = require('sendPixel');
 const getType = require('getType');
 // const log = require('logToConsole');
 
+// Get formatted date
+function getDate(date){
+  if(data.transformDates) {
+    return data.convertFunction(date, data.helperParam);
+  }
+
+  return date;
+}
+
 // Process data types
 const organization = data.organizationID;
 const hotel = data.hotelID;
-const arrival = data.transformDates ? data.convertFunction(data.arrivalDate, data.datePattern) : data.arrivalDate;
-const departure = data.transformDates ? data.convertFunction(data.departureDate, data.datePattern) : data.departureDate;
-//const adults = getType(data.adultCount) === 'number' ? data.adultCount.toString() : data.adultCount;
-//const kids = getType(data.kidsCount) === 'number' ? data.kidsCount.toString() : data.kidsCount;
-//const rooms = getType(data.roomCount) === 'number' ? data.roomCount.toString() : data.roomCount;
+const arrival = getDate(data.arrivalDate);
+const departure = getDate(data.departureDate);
 const adults = data.adultCount;
 const kids = data.kidsCount;
 const rooms = data.roomCount;
@@ -242,7 +247,7 @@ scenarios:
     }\n\n// Mocked template parameters\nconst mockData = {\n  organizationID: organization,\n\
     \  hotelID: hotel,\n  arrivalDate: '01/9/22',\n  departureDate: '10/9/22',\n \
     \ adultCount: adults,\n  kidsCount: kids,\n  roomCount: rooms,\n  transformDates:\
-    \ true,\n  datePattern: 'DD/M/YY',\n  convertFunction: mockedTransformFunction,\n\
+    \ true,\n  helperParam: 'DD/M/YY',\n  convertFunction: mockedTransformFunction,\n\
     };\n\n// Expected values\nlet pixelUrl = pixelDomain;\n    pixelUrl += organization;\n\
     \    pixelUrl += '?hotelId=' + hotel;\n    pixelUrl += '&arrivalDate=' + arrival;\n\
     \    pixelUrl += '&departureDate=' + departure;\n    pixelUrl += '&adultCount='\
