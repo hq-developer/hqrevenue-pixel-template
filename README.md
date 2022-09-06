@@ -15,38 +15,38 @@ Fill in the parameters needed, test the integration, and publish it.
 #### 1. Organization ID
 You will get this value with our support or sales teams. It is a long identifier id for your organization.
 
-### 2. Value of the arrival date
+#### 2. Value of the arrival date
 This is the check-in date your guest are searching for.
 
 1. Use a GTM variable to point in this field
 2. It is important that your dates are formatted according the ISO-8601 standard. You can find more about date formats bellow in this document.
 
-### 3. Value of the departure date
+#### 3. Value of the departure date
 This is the check-out date your guest are searching for.
 
 1. Use a GTM variable to point in this field
 2. It is important that your dates are formatted according the ISO-8601 standard. You can find more about date formats bellow in this document.
 
-### 4. Number of adults
+#### 4. Number of adults
 This is the amount of adult guests your customers are searching for.
 
 1. Use a GTM variable to point in this field
 
-### 5. Number of children
+#### 5. Number of children
 This is the amount of kids children or infants guests your customers are searching for.
 
 1. Use a GTM variable to point in this field
 2. HQ revenue api does not differentiate children per age. 
 If you system does it, please configure a GTM variable that can send to our pixel a summed value.
 
-### 6. Number of rooms
+#### 6. Number of rooms
 This is the amount of rooms your customers are searching for.
 
 1. Use a GTM variable to point in this field
 2. HQ revenue api does not differentiate types of rooms.
    If you system does it, please configure a GTM variable that can send to HQ Pixel a sum of all booking rooms.
 
-### 7. Identification of the selected hotel (Only for hotel chains)
+#### 7. Identification of the selected hotel (Only for hotel chains)
 This is the identification of the hotel of your chain your customers are searching for.
 
 1. Use a GTM variable to point in this field
