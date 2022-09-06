@@ -1,49 +1,85 @@
-# hqrevenue-pixel-template
+# HQ revenue Pixel template
 HQ revenue's pixel for Google Tag Manager integrations
 
 ## Introduction
 
 The HQ revenue's Pixel template makes it easy for hotels, IBEs and OTAs to send booking intentions to HQ revenue's Performance Board.
 
-## Step-by-Step example
+## Configuration
 
 Once you have GTM up and running, simply create a new tag, and search for our template in the community gallery.
 Fill in the parameters needed, test the integration, and publish it.
 
-![HQ revenue Pixel interface](resources/hq-pixel-interface.png)
+### Parameters Description 
 
-### 1. Organization ID
+#### 1. Organization ID
 You will get this value with our support or sales teams. It is a long identifier id for your organization.
 
-### 2. Booking Variables
-The booking variables are the information with the booking intent we want to measure.
+### 2. Value of the arrival date
+This is the check-in date your guest are searching for.
 
-1. Arrival date
-2. Departure date
-3. Number of adults
-4. Number of children
-5. Number of rooms
-6. Hotel identification (only needed for hotel chains)
+1. Use a GTM variable to point in this field
+2. It is important that your dates are formatted according the ISO-8601 standard. You can find more about date formats bellow in this document.
 
-It is a good practice that these information should be represented in a DataLayer variable that could be easily given as 
-inputs for each related parameter.
+### 3. Value of the departure date
+This is the check-out date your guest are searching for.
 
-### 3 Booking Dates Format - (Should dates be formatted to ISO Standard)
+1. Use a GTM variable to point in this field
+2. It is important that your dates are formatted according the ISO-8601 standard. You can find more about date formats bellow in this document.
 
+### 4. Number of adults
+This is the amount of adult guests your customers are searching for.
+
+1. Use a GTM variable to point in this field
+
+### 5. Number of children
+This is the amount of kids children or infants guests your customers are searching for.
+
+1. Use a GTM variable to point in this field
+2. HQ revenue api does not differentiate children per age. 
+If you system does it, please configure a GTM variable that can send to our pixel a summed value.
+
+### 6. Number of rooms
+This is the amount of rooms your customers are searching for.
+
+1. Use a GTM variable to point in this field
+2. HQ revenue api does not differentiate types of rooms.
+   If you system does it, please configure a GTM variable that can send to HQ Pixel a sum of all booking rooms.
+
+### 7. Identification of the selected hotel (Only for hotel chains)
+This is the identification of the hotel of your chain your customers are searching for.
+
+1. Use a GTM variable to point in this field
+2. This is an important parameter for hotel chains. Leave it blank if your organization has only one hotel.
+
+## About General Data Protection Regulation (GDRP)
+
+The booking intent information does not fall in GDRP, because HQ revenue does not apply any user identification method.
+Our goal is to evaluate the intentions of your users, but not to identify them.
+
+Though HQ revenue does not use any tracking method, the "pixel tracking" mechanism is very popular for tracking purposes,
+And GTM, or browser's extensions, can disable it if the user does not agree with during cookies acceptance setup.
+
+Our HQ revenue Script template solution can be another option to avoid the problem.
+
+## More About ISO-8601 date format
 > IMPORTANT!
 > If your system is already using dates according the ISO-8601 Standard, meaning, dates as 2022-12-25 to represent 25th of December 2022,
-> you can skip this section and do not enable the checkbox "Yes, transform my dates"
+> you can ignore this section.
 
-HQ revenue's system works with date in ISO-8601 standards format, which means the dates should be formatted as YYYY-MM-DD.
-Example: 2022-12-25.
+The ISO-8601 standard is an international adopted standard used by HQ revenue, because "the standard provides a well-defined,
+unambiguous method of representing calendar dates and times in worldwide communications, especially to avoid
+misinterpreting numeric dates and times when such data is transferred between countries with different conventions for
+writing numeric dates and times." (https://en.wikipedia.org/wiki/ISO_8601)
 
-If your system does not work with ISO date standards, you can use a Custom Javascript variable that can convert your data
-format to ISO format and HQ revenue's Pixel template will execute it before sending the dates to our servers. Bellow you have
-some tips on how to do it.
+The ISO-8601 standard define date format as YYYY-MM-DD. Example: 2022-12-25.
 
-**1. Using a Custom Javascript Variable that reads values from the HTML**
+If your system does not work with ISO date standards, you can use some Custom Javascript variables to convert your date
+format to ISO format before connecting it to HQ revenue Pixel template. Let's see how to create variables that can do the 
+date conversion.
 
-Assuming a simple document body where the arrival and departure dates have in a span element in a non-ISO standard format:
+Imagine the scenario in which you have no GTM variable setup, and the date is available only in you HTML document. The HTML
+document would look the example bellow:
 ```html
 <body>
     <h1>Booking example</h1>
@@ -56,113 +92,29 @@ Assuming a simple document body where the arrival and departure dates have in a 
   </body>
 ```
 
-You can create two dedicated Custom Javascript variables in GTM, and assign a very simple script to them Note that the
-id of the elements must change for each function implementation.
+Whe can break this problem in two steps:
+1. Create a variable `checkInField` that stores the date from the HTML;
+2. Create a variable `checkInDate` that converts the value of `checkInField` to the ISO-8601 format.
 
+**Step one:**
+* In GTM, in the lest-side menu, we navigate to the `Variables`;
+* In User-Defined Variables, we click on `NEW`;
+* On the top panel where we see "Untitled Variable" we type `checkInField`;
+* Clicking on the "Variable Configuration" panel, we select the `DOM Element` variable template;
+* Selecting `ID` as selection method, we type `check-in` (pay attention on the id parameter of your HTMl element. Our case is "check-in");
+* Now we save the variable.
+
+From this point onwards, the variable `checkInField` will hold the value "05 October 2022 14:00 UTC" from our HTML element.
+
+**Step two:**
+* Again in the GTM's Variables section, we create a new User-Defined variable;
+* We name this one as `checkInDate` and once clicked in "Variable Configuration" we select the `Custom Javascript` template;
+* In the Custom Javascript template we type the following code:
 ```javascript
-/**
- * Convert date information from selected element to ISO Standard.
- */
-function(){
-  var dateText = document.getElementById('date-1').textContent;
-  
-  if(!dateText) {
-    return '';
-  }
-  
-  return new Date(dateText).toISOString();
-}
-```
-
-**1. Using a Custom Javascript Variable as a function**
-
-You can create a generic date conversion function as a Custom Javascript variable and give it to HQ revenue's to execute
-the conversion before sending the data. For this case, enable the "Yes, transform my date" checkbox, add your function.
-
-![Format Function](resources/format-function.png)
-
-The second parameter is optional. It will be sent to you function, as a second parameter. I can be useful as a helper,
-for example, as a regular expressions pattern.
-
-```javascript
-function(){
-    return function(date, sedondParameter) {
-        return new Date(date).toISOString();
-    }
-}
-```
-
-In case you need a generic conversion example, we offer the code snippet bellow. It makes use of regular expressions for
-date conversion. It is not the most performant, you are advised to prune this function for your specific case, since it
-is very generic.
-
-For this example to work, you need to pass as a second parameter, the information of how is your date information formatted.
-
-For example, if your dates are represented as 12/25/22, the second parameter should be MM/DD/YY.
-
-```javascript
-/**
- * Parse the `dateString` (that is based in the `format` parameter) to ISO Strings.
- * 
- * Eg: 
- * To format 12/25/22 into 2022-12-25T00:00:00.000Z:
- * parseDateFormat("12/25/22", "MM/DD/YY")
- *
- * Your date's format description. In ISO duration, eg: DD.MM.YYYY, or MM.DD.YY
- * 
- * @param dateString  String with the date to be formated
- * @param format      Date Format using ISO Duration designators
- * @return {string}
- */
 function() {
-  return function(dateString, format) {
-    var isoString = '';
-    var result = format.match(/([YMD]{1,4})(.|\/|-)([YMD]{1,4})?(.|\/|-)([YMD]{1,4})/);
-
-    var test = result
-        .filter(function(item, index){ return index !== 0 })
-        .map(function(item) {
-            switch (item) {
-                case 'D':
-                    return '(?<day>\\d{1})';
-                case 'DD':
-                    return '(?<day>\\d{2})';
-                case 'M':
-                    return '(?<month>\\d{1})';
-                case 'MM':
-                    return '(?<month>\\d{2})';
-                case 'YY':
-                    return '(?<year>\\d{2})';
-                case 'YYYY':
-                    return '(?<year>\\d{4})';
-                default:
-                    return '\\'+item;
-            }
-        })
-        .join('');
-
-    var match = new RegExp('^'+test+'$').exec(dateString);
-
-    if (match) {
-        var year = match.groups.year.charAt(2) ? match.groups.year : ("20"+match.groups.year)
-        var month = match.groups.month.charAt(1) ? match.groups.month : ("0"+match.groups.month)
-        var day = match.groups.day.charAt(1) ? match.groups.day : ("0"+match.groups.day)
-        isoString = year+'-'+month+'-'+day+'T00:00:00.000Z'
-    } else {
-      isoString = dateString
-    }
-    
-    return isoString;
-  }
+  return new Date({{checkInField}}).toISOString();
 }
 ```
+* New we save the variable.
 
-## About General Data Protection Regulation (GDRP)
-
-The booking intent information does not fall in GDRP, because HQ revenue does not apply any user identification method.
-Our goal is to evaluate the intentions of your users, but not to identify them.
-
-Though HQ revenue does not use any tracking method, the "pixel tracking" mechanism is very popular for tracking purposes,
-And GTM, or browser's extensions, can disable it if the user does not agree with during cookies acceptance setup.
-
-Our HQ revenue's Script template solution can be another option to avoid the problem. 
+After these steps, you can connect the variable `checkInDate` to the HQ revenue Pixel template.

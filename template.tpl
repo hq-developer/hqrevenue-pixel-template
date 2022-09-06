@@ -13,15 +13,16 @@ ___INFO___
   "id": "cvt_temp_public_id",
   "version": 1,
   "securityGroups": [],
-  "displayName": "HQ revenue\u0027s Pixel",
+  "displayName": "HQ revenue Pixel",
   "brand": {
     "id": "brand_dummy",
-    "displayName": ""
+    "displayName": "",
+    "thumbnail": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAIAAAADnC86AAAAAXNSR0IB2cksfwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAkNJREFUeJzt1ktLG1EUAGB/i6lFqNaCIhSkrYoUu6qi4EKoKzdtsXQt3VmXithFjSY1vk2JihUbE61KXWg08YHOO++YmWRiHGd+gMdEReNkksjMFSTDWYSby3xz7j33zBQUDmAPEgV5OA8/Crh51v3V7kcN6/TY6D73apxCDb+3MANOVod4qZ/osRUmVjdFX48gghsszNg+BzxqeBaLlpuImyMoYNjdfkc4ZRAFbNrjaibplEHNYUh3ZI+7O64tDNX073YxI4IbLO5BJyv7l4YwtKrxA65qjFIBLjEQdpqPCSJU6dNBXHnyOzPzc0c+3Zzhns1jKXEJotQ441ZOF1SwVYCL9JjlKJKERUn6S/LVE/LLCNE67zHusjp92rvlAHeuBihOWHXHeEH84Qh3b4ToiPDF7tfJTZ7Do8pLkhUM2/l9I7TuiVWOkCm7aKP5ZYZ/czv1evPFi6gofbpZwSUGfJHk5/HocyMhO6F90Yuxp7AGL34R5cPER6vPSvEvR0nl22aAnyVUg4uFHwrTKkzkzFFkJxB3BuPJIvjwx3t/uHaStlF87+ZxxpNTmGhSn5d8Z2LSlUxybTIrGJqOIxDvXAsqVGZKlBrx7cBFxsB32Pz3gd9O065gHHYrS/I66s1031YYHle5suThT1YfnJOWOU+uak5xCcMuflsP/j6MDLnYLf/J6/SdQWW4bcF7elUYTYoHX2W4639IurrgsxsdDJ8moZMzUKGmiocyHx7VYAh4ccKpL0vTnjSEEUcezsOaxTlT2jI/KFjW6QAAAABJRU5ErkJggg\u003d\u003d"
   },
-  "description": "Integrate booking intents from your site to HQ revenue's Performance Board.",
+  "description": "Integrate booking intents from your website to HQ revenue Performance Board.",
   "categories": [
     "ANALYTICS",
-    "SALES",
+    "SALES"
   ],
   "containerContexts": [
     "WEB"
@@ -47,13 +48,13 @@ ___TEMPLATE_PARAMETERS___
       {
         "type": "TEXT",
         "name": "arrivalDate",
-        "displayName": "Value of the arrival date",
+        "displayName": "Value of the arrival date. (YYYY-MM-DD according ISO-8601)",
         "simpleValueType": true
       },
       {
         "type": "TEXT",
         "name": "departureDate",
-        "displayName": "Value of the departure date",
+        "displayName": "Value of the departure date. (YYYY-MM-DD according ISO-8601)",
         "simpleValueType": true
       },
       {
@@ -81,46 +82,6 @@ ___TEMPLATE_PARAMETERS___
         "simpleValueType": true
       }
     ]
-  },
-  {
-    "type": "GROUP",
-    "name": "ApplyDateTransformation",
-    "displayName": "Should dates be formatted to ISO Standard? (YYYY-MM-DD)",
-    "groupStyle": "NO_ZIPPY",
-    "subParams": [
-      {
-        "type": "CHECKBOX",
-        "name": "transformDates",
-        "checkboxText": "Yes, transform my dates.",
-        "simpleValueType": true
-      },
-      {
-        "type": "TEXT",
-        "name": "convertFunction",
-        "displayName": "Custom Javascript function to convert dates.",
-        "simpleValueType": true,
-        "enablingConditions": [
-          {
-            "paramName": "transformDates",
-            "paramValue": true,
-            "type": "EQUALS"
-          }
-        ]
-      },
-      {
-        "type": "TEXT",
-        "name": "helperParam",
-        "displayName": "Second parameter to be sent to your conversion function. (Optional)",
-        "simpleValueType": true,
-        "enablingConditions": [
-          {
-            "paramName": "transformDates",
-            "paramValue": true,
-            "type": "EQUALS"
-          }
-        ]
-      }
-    ]
   }
 ]
 
@@ -132,26 +93,17 @@ const queryPermission = require('queryPermission');
 const sendPixel = require('sendPixel');
 const getType = require('getType');
 
-// Get formatted date
-function getDate(date){
-  if(data.transformDates) {
-    return data.convertFunction(date, data.helperParam);
-  }
-
-  return date;
-}
-
 // Process data types
 const organization = data.organizationID;
 const hotel = data.hotelID;
-const arrival = getDate(data.arrivalDate);
-const departure = getDate(data.departureDate);
+const arrival = data.arrivalDate;
+const departure = data.departureDate;
 const adults = data.adultCount;
 const kids = data.kidsCount;
 const rooms = data.roomCount;
 
 // Build HQ Pixel URL
-let pixelUrl = 'https://s8qyj1.sse.codesandbox.io/pixel/';
+let pixelUrl = 'https://script.nowhq.com/pick/pxl/';
     pixelUrl += organization;
     pixelUrl += '?hotelId=' + (hotel || '');
     pixelUrl += '&arrivalDate=' + (arrival || '');
@@ -195,7 +147,7 @@ ___WEB_PERMISSIONS___
             "listItem": [
               {
                 "type": 1,
-                "string": "https://s8qyj1.sse.codesandbox.io/pixel/*"
+                "string": "https://script.nowhq.com/pick/pxl/*"
               }
             ]
           }
@@ -230,24 +182,6 @@ scenarios:
     \  hotelID: hotel,\n  arrivalDate: arrival,\n  departureDate: departure,\n  adultCount:\
     \ adults,\n  kidsCount: kids,\n  roomCount: rooms,\n  transformDates: false,\n\
     \  \n};\n\n// Expected values\nlet pixelUrl = pixelDomain;\n    pixelUrl += organization;\n\
-    \    pixelUrl += '?hotelId=' + hotel;\n    pixelUrl += '&arrivalDate=' + arrival;\n\
-    \    pixelUrl += '&departureDate=' + departure;\n    pixelUrl += '&adultCount='\
-    \ + adults;\n    pixelUrl += '&kidsCount=' + kids;\n    pixelUrl += '&roomCount='\
-    \ + rooms;\n\n// Mock sendPixel API\nmock('sendPixel', function(url, onSuccess,\
-    \ onFailure) {\n  assertThat(url).isEqualTo(pixelUrl);\n  onSuccess();\n});\n\n\
-    // Call runCode to run the template's code.\nrunCode(mockData);\n\n// Verify that\
-    \ the tag finished successfully.\nassertApi('queryPermission').wasCalledWith('send_pixel',\
-    \ pixelUrl);\nassertApi('sendPixel').wasCalled();\nassertApi('gtmOnSuccess').wasCalled();"
-- name: it should call pixel with formated dates
-  code: "function mockedTransformFunction(date, pattern){\n  // Asserts that the pattern\
-    \ was sent to the convertion function\n  assertThat(pattern).isEqualTo('DD/M/YY');\n\
-    \  \n  if (date === '01/9/22') {\n    return '2022-09-01';\n  } else if (date\
-    \ === '10/9/22') {\n    return '2022-09-10';\n  } else {\n    return '';\n  }\n\
-    }\n\n// Mocked template parameters\nconst mockData = {\n  organizationID: organization,\n\
-    \  hotelID: hotel,\n  arrivalDate: '01/9/22',\n  departureDate: '10/9/22',\n \
-    \ adultCount: adults,\n  kidsCount: kids,\n  roomCount: rooms,\n  transformDates:\
-    \ true,\n  helperParam: 'DD/M/YY',\n  convertFunction: mockedTransformFunction,\n\
-    };\n\n// Expected values\nlet pixelUrl = pixelDomain;\n    pixelUrl += organization;\n\
     \    pixelUrl += '?hotelId=' + hotel;\n    pixelUrl += '&arrivalDate=' + arrival;\n\
     \    pixelUrl += '&departureDate=' + departure;\n    pixelUrl += '&adultCount='\
     \ + adults;\n    pixelUrl += '&kidsCount=' + kids;\n    pixelUrl += '&roomCount='\
@@ -295,7 +229,7 @@ scenarios:
     assertApi('sendPixel').wasCalled();
     assertApi('gtmOnSuccess').wasCalled();
 setup: |-
-  const pixelDomain = 'https://s8qyj1.sse.codesandbox.io/pixel/';
+  const pixelDomain = 'https://script.nowhq.com/pick/pxl/';
   const organization = 'ABC';
   const hotel = 41;
   const arrival = '2022-09-01';
