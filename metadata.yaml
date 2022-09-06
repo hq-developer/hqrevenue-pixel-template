@@ -15,5 +15,5 @@
 homepage: "https://hqrevenue.com"
 documentation: "https://github.com/hq-developer/hqrevenue-pixel-template"
 versions:
-  - sha: c283e11c7a31403c6a81b48fa348e2801668a024
+  - sha: 57c66730dc48c8afd19774f4dd43267bf34bfc72
     changeNotes: Initial Version
