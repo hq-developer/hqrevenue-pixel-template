@@ -20,10 +20,6 @@ ___INFO___
     "thumbnail": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAIAAAADnC86AAAAAXNSR0IB2cksfwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAkNJREFUeJzt1ktLG1EUAGB/i6lFqNaCIhSkrYoUu6qi4EKoKzdtsXQt3VmXithFjSY1vk2JihUbE61KXWg08YHOO++YmWRiHGd+gMdEReNkksjMFSTDWYSby3xz7j33zBQUDmAPEgV5OA8/Crh51v3V7kcN6/TY6D73apxCDb+3MANOVod4qZ/osRUmVjdFX48gghsszNg+BzxqeBaLlpuImyMoYNjdfkc4ZRAFbNrjaibplEHNYUh3ZI+7O64tDNX073YxI4IbLO5BJyv7l4YwtKrxA65qjFIBLjEQdpqPCSJU6dNBXHnyOzPzc0c+3Zzhns1jKXEJotQ441ZOF1SwVYCL9JjlKJKERUn6S/LVE/LLCNE67zHusjp92rvlAHeuBihOWHXHeEH84Qh3b4ToiPDF7tfJTZ7Do8pLkhUM2/l9I7TuiVWOkCm7aKP5ZYZ/czv1evPFi6gofbpZwSUGfJHk5/HocyMhO6F90Yuxp7AGL34R5cPER6vPSvEvR0nl22aAnyVUg4uFHwrTKkzkzFFkJxB3BuPJIvjwx3t/uHaStlF87+ZxxpNTmGhSn5d8Z2LSlUxybTIrGJqOIxDvXAsqVGZKlBrx7cBFxsB32Pz3gd9O065gHHYrS/I66s1031YYHle5suThT1YfnJOWOU+uak5xCcMuflsP/j6MDLnYLf/J6/SdQWW4bcF7elUYTYoHX2W4639IurrgsxsdDJ8moZMzUKGmiocyHx7VYAh4ccKpL0vTnjSEEUcezsOaxTlT2jI/KFjW6QAAAABJRU5ErkJggg\u003d\u003d"
   },
   "description": "Integrate booking intents from your website to HQ revenue Performance Board.",
-  "categories": [
-    "ANALYTICS",
-    "SALES"
-  ],
   "containerContexts": [
     "WEB"
   ]
@@ -91,7 +87,6 @@ ___SANDBOXED_JS_FOR_WEB_TEMPLATE___
 // Sandbox imports
 const queryPermission = require('queryPermission');
 const sendPixel = require('sendPixel');
-const getType = require('getType');
 
 // Process data types
 const organization = data.organizationID;
@@ -241,6 +236,6 @@ setup: |-
 
 ___NOTES___
 
-Created on 31/08/2022, 23:16:30
+Created on 15/09/2022, 09:34:27
 
 
