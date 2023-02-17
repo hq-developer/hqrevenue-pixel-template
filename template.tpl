@@ -91,7 +91,8 @@ ___SANDBOXED_JS_FOR_WEB_TEMPLATE___
 // Sandbox imports
 const queryPermission = require('queryPermission');
 const sendPixel = require('sendPixel');
-const getType = require('getType');
+const encodeUri = require('encodeUri');
+const encodeUriComponent = require('encodeUriComponent');
 
 // Process data types
 const organization = data.organizationID;
@@ -104,13 +105,13 @@ const rooms = data.roomCount;
 
 // Build HQ Pixel URL
 let pixelUrl = 'https://script.nowhq.com/pick/pxl/';
-    pixelUrl += organization;
-    pixelUrl += '?hotelId=' + (hotel || '');
-    pixelUrl += '&arrivalDate=' + (arrival || '');
-    pixelUrl += '&departureDate=' + (departure || '');
-    pixelUrl += '&adultCount=' + (adults || '');
-    pixelUrl += '&kidsCount=' + (kids || '');
-    pixelUrl += '&roomCount=' + (rooms || '');
+    pixelUrl += encodeUri(organization);
+    pixelUrl += '?hotelId=' + encodeUriComponent(hotel || '');
+    pixelUrl += '&arrivalDate=' + encodeUriComponent(arrival || '');
+    pixelUrl += '&departureDate=' + encodeUriComponent(departure || '');
+    pixelUrl += '&adultCount=' + encodeUriComponent(adults || '');
+    pixelUrl += '&kidsCount=' + encodeUriComponent(kids || '');
+    pixelUrl += '&roomCount=' + encodeUriComponent(rooms || '');
 
 // Check for the permissions
 if(queryPermission('send_pixel', pixelUrl)) {
